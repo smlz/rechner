@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rechner</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1>Rechner</h1>
+    <div id="app">
+      <h4>Rechnung</h4>
+      <textarea v-model="input" spellcheck="false"></textarea><br>
+      <p v-if="error" class="error"><strong>{{error.name}}: </strong>{{error.message}}</p>
+      <template v-else>
+        <h4>Resultat</h4>
+        <p class="code">{{result}}</p>
+      </template>
+      <div class="tokens">
+        <h4>Tokens</h4>
+        <p>
+          <template v-for="token in tokens">
+            <span class="token tooltip" :key="token.valueOf()">{{token.valueOf()}}</span>&nbsp;
+          </template>
+        </p>
+      </div>
+      <div class="ast">
+        <h4>Syntax-Baum</h4>
+        <item :model="syntax_tree"></item>
+      </div>
+      <div class="env">
+        <h4>Funktionen</h4>
+        <ul class="env">
+          <li v-for="(val, key) in functions" :key="key">
+            <strong>{{key}}</strong> : {{typeof val === "object" ? "function": "number"}}
+          </li>
+        </ul>
+      </div>
+      <hr>
+      <h4>Links</h4>
+      <a href="http://norvig.com/lispy.html">Peter Norvig's lis.py</a><br>
+      <a href="https://scheme.cs61a.org/">Online Scheme Interpreter (61A Scheme)</a>
+    </div>
+
+    <script type="text/x-template" id="item-template">
+      <li v-if="isList">
+        <ul>
+          <item v-for="item of model" :key="item.toString()" :model="item"></item>
+        </ul>
+      </li>
+      <li v-else :class="model.valueOf()">{{model.valueOf()}}</li>
+    </script>
+    <script src="vue.js" charset="utf-8"></script>
+    <script src="app.js" charset="utf-8"></script>
+  </body>
+</html>
