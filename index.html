@@ -28,10 +28,25 @@
         <item :model="syntax_tree"></item>
       </div>
       <div class="env">
+        <h4>Special Forms</h4>
+        <ul class="env">
+          <li>
+            <em><strong>FIXME</strong></em> : Special Forms dokumentieren
+          </li>
+          <li>
+            <em>(<strong>name</strong> arg1 arg2)</em> : Lorem ipsum
+          </li>
+        </ul>
         <h4>Funktionen</h4>
         <ul class="env">
           <li v-for="(val, key) in functions" :key="key">
-            <strong>{{key}}</strong> : {{typeof val === "object" ? "function": "number"}}
+            <strong>{{key}}</strong> : {{typeof val}}
+          </li>
+        </ul>
+        <h4>Variablen</h4>
+        <ul class="env">
+          <li v-for="(val, key) in variables" :key="key">
+            <strong>{{key}}</strong> : {{val}}
           </li>
         </ul>
       </div>

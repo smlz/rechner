@@ -56,31 +56,60 @@
 
     };
 
+    const variables = {};
+
     // ===================================== //
     // evaluate: Eine Rechnung 'x' auswerten //
     // ===================================== //
     function evaluate(x) {
-        if (typeof x === "number") {
+        if (typeof x === "number") {   // Eine nackte Zahl
             return x;
-        } else if (x instanceof Array) {
-            // Das erste Element ist der Name der Funktion
+        } else if (typeof x === "string") {  // Ein Name einer Variable
+            return variables[x];
+        } else if (x instanceof Array) {    // Eine Rechnung
+
+            // Das erste Element ist der Name der Operation
             var func_name = x[0];
-            // Finde die Funktion in der Liste der Funktionen
-            var func = functions[func_name];
 
-            var args = [];
-            for (var i=1; i < x.length; i++) {
-                args.push(evaluate(x[i]))
+            // ============= //
+            // Special Forms //
+            // ============= //
+            if (func_name === '') {  // FIXME: Bestimme den Namen der Special Form
+                var result;
+                for (var i=1; i < x.length; i++) {
+                    // Alle Rechnungen der Reihe nach auswerten
+                    result = evaluate(x[i]);
+                }
+                // Das letzte Resultat zurück geben
+                return result;
+
+            } else if (func_name == 'define') { // FIXME Bestimme den Namen der Special Form
+                // Name der Variable
+                var var_name = x[1];
+
+                // Evaluiere den Wert der Variable
+                var value = evaluate(x[2]);
+
+                // Wert in der Tabelle der Variablen abspeichern
+                variables[var_name] = value;
+
+            } else {
+                // ================== //
+                // 'Normale' Funktion //
+                // ================== //
+
+                // Finde die Funktion in der Liste der Funktionen
+                var func = functions[func_name];
+
+                // Evaluiere die Argumente der Funktion
+                var args = [];
+                for (var i=1; i < x.length; i++) {
+                    args.push(evaluate(x[i]))
+                }
+
+                // Führe die Funktion mit den verbleibenden Argumenten aus
+                return func(...args);
             }
-
-            // ************************************************* //
-            // FIXME: Ändere die evaluate Funktion so, dass auch //
-            //        verschachtelte Rechnungen berechnet werden //
-            //        können.                                    //
-            // ************************************************* //
-
-            // Führe die Funktion mit den verbleibenden Argumenten aus
-            return func(...args);
         } else {
             throw new Error("Kann Rechnung nicht interpretieren: " + x)
         }
@@ -108,6 +137,7 @@
             tokens: [],
             syntax_tree: [],
             functions: functions,
+            variables: variables,
             result: undefined,
             error: false,
             debug: true
@@ -121,7 +151,6 @@
                 try {
                     this.tokens = tokenize(val);
                     this.syntax_tree = parse(this.tokens.slice());
-                    console.log(this.syntax_tree);
                     let result = evaluate(this.syntax_tree);
                     if (result instanceof Array) {
                         const pprint = tree => tree instanceof Array ?
@@ -134,7 +163,6 @@
                     }
                 } catch (error) {
                     this.error = error;
-                    console.log(error);
                 }
             }
         },
