@@ -49,6 +49,13 @@
     // ================================ //
     const functions = {
         "+": function(a, b) { return a + b; },
+        "-": function(a, b) {
+            if (b === undefined) {
+                return -a
+            } else {
+                return a - b;
+            }
+        },
 
         // ************************************************* //
         // FIXME: Baue weitere mathematische Funktionen ein! //
