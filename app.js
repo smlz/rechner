@@ -81,7 +81,7 @@
             // ============= //
             // Special Forms //
             // ============= //
-            if (func_name === '') {  // FIXME: Bestimme den Namen der Special Form
+            if (func_name === 'begin') {  // FIXME: Bestimme den Namen der Special Form
                 var result;
                 for (var i=1; i < x.length; i++) {
                     // Alle Rechnungen der Reihe nach auswerten
