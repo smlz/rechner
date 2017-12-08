@@ -95,6 +95,8 @@
 
                 // Wert in der Tabelle der Variablen abspeichern
                 environment[var_name] = value;
+            } else if (func_name === 'lambda') {
+                return x;
             } else {
                 // ================== //
                 // 'Normale' Funktion //
@@ -102,14 +104,25 @@
 
                 // Finde die Funktion in der Liste der Funktionen
                 var func = environment[func_name];
+                console.log(func);
                 // Evaluiere die Argumente der Funktion
                 var args = [];
                 for (var i=1; i < x.length; i++) {
                     args.push(evaluate(x[i]))
                 }
 
-                // Führe die Funktion mit den verbleibenden Argumenten aus
-                return func(...args);
+                if (func instanceof Array) {  // Selbst definierte Funktion
+                    // func[0]=== 'lambda'
+                    var arg_names = func[1];
+                    var body = func[2];
+                    if (arg_names.length === 1) {
+                        environment[arg_names[0]] = args[0];
+                    }
+                    return evaluate(body);
+                } else {   // Eingebaute Funktion
+                    // Führe die Funktion mit den verbleibenden Argumenten aus
+                    return func(...args);
+                }
             }
         } else {
             throw new Error("Kann Rechnung nicht interpretieren: " + x)
