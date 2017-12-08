@@ -56,10 +56,8 @@
                 return a - b;
             }
         },
-
-        // ************************************************* //
-        // FIXME: Baue weitere mathematische Funktionen ein! //
-        // ************************************************* //
+        "*": function(a, b) { return a * b; },
+        "/": function(a, b) { return a / b; },
 
     };
 
@@ -79,7 +77,7 @@
             // ============= //
             // Special Forms //
             // ============= //
-            if (func_name === 'begin') {  // FIXME: Bestimme den Namen der Special Form
+            if (func_name === 'begin') {
                 var result;
                 for (var i=1; i < x.length; i++) {
                     // Alle Rechnungen der Reihe nach auswerten
@@ -88,7 +86,7 @@
                 // Das letzte Resultat zurück geben
                 return result;
 
-            } else if (func_name == 'define') { // FIXME Bestimme den Namen der Special Form
+            } else if (func_name == 'define') {
                 // Name der Variable
                 var var_name = x[1];
 
