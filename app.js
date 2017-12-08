@@ -44,10 +44,10 @@
         }
     }
 
-    // ================================ //
-    // functions: Eingebaute Funktionen //
-    // ================================ //
-    const functions = {
+    // ================================= //
+    // environment: Funktionen und Werte//
+    // ================================= //
+    const environment = {
         "+": function(a, b) { return a + b; },
         "-": function(a, b) {
             if (b === undefined) {
@@ -63,8 +63,6 @@
 
     };
 
-    const variables = {};
-
     // ===================================== //
     // evaluate: Eine Rechnung 'x' auswerten //
     // ===================================== //
@@ -72,7 +70,7 @@
         if (typeof x === "number") {   // Eine nackte Zahl
             return x;
         } else if (typeof x === "string") {  // Ein Name einer Variable
-            return variables[x];
+            return environment[x];
         } else if (x instanceof Array) {    // Eine Rechnung
 
             // Das erste Element ist der Name der Operation
@@ -98,16 +96,14 @@
                 var value = evaluate(x[2]);
 
                 // Wert in der Tabelle der Variablen abspeichern
-                variables[var_name] = value;
-
+                environment[var_name] = value;
             } else {
                 // ================== //
                 // 'Normale' Funktion //
                 // ================== //
 
                 // Finde die Funktion in der Liste der Funktionen
-                var func = functions[func_name];
-
+                var func = environment[func_name];
                 // Evaluiere die Argumente der Funktion
                 var args = [];
                 for (var i=1; i < x.length; i++) {
@@ -143,8 +139,7 @@
             input: "",
             tokens: [],
             syntax_tree: [],
-            functions: functions,
-            variables: variables,
+            environment: environment,
             result: undefined,
             error: false,
             debug: true
