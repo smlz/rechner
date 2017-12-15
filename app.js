@@ -68,10 +68,11 @@
         if (typeof x === "number") {   // Eine nackte Zahl
             return x;
         } else if (typeof x === "string") {  // Ein Name einer Variable
-            console.log(x, local_environment);
             if (x in local_environment) {
+                // Zuerst im lokalen Environment der Funktion suchen ...
                 return local_environment[x]
             } else {
+                // ... dann im globalen Environment
                 return global_environment[x];
             }
         } else if (x instanceof Array) {    // Eine Rechnung
