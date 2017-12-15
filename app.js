@@ -47,7 +47,7 @@
     // ================================= //
     // environment: Funktionen und Werte//
     // ================================= //
-    const environment = {
+    const global_environment = {
         "+": function(a, b) { return a + b; },
         "-": function(a, b) {
             if (b === undefined) {
@@ -64,11 +64,16 @@
     // ===================================== //
     // evaluate: Eine Rechnung 'x' auswerten //
     // ===================================== //
-    function evaluate(x) {
+    function evaluate(x, local_environment) {
         if (typeof x === "number") {   // Eine nackte Zahl
             return x;
         } else if (typeof x === "string") {  // Ein Name einer Variable
-            return environment[x];
+            console.log(x, local_environment);
+            if (x in local_environment) {
+                return local_environment[x]
+            } else {
+                return global_environment[x];
+            }
         } else if (x instanceof Array) {    // Eine Rechnung
 
             // Das erste Element ist der Name der Operation
@@ -81,7 +86,7 @@
                 var result;
                 for (var i=1; i < x.length; i++) {
                     // Alle Rechnungen der Reihe nach auswerten
-                    result = evaluate(x[i]);
+                    result = evaluate(x[i], local_environment);
                 }
                 // Das letzte Resultat zurück geben
                 return result;
@@ -91,10 +96,10 @@
                 var var_name = x[1];
 
                 // Evaluiere den Wert der Variable
-                var value = evaluate(x[2]);
+                var value = evaluate(x[2], local_environment);
 
                 // Wert in der Tabelle der Variablen abspeichern
-                environment[var_name] = value;
+                local_environment[var_name] = value;
             } else if (func_name === 'lambda') {
                 return x;
             } else {
@@ -103,22 +108,28 @@
                 // ================== //
 
                 // Finde die Funktion in der Liste der Funktionen
-                var func = environment[func_name];
+                var func = evaluate(func_name, local_environment);
 
                 // Evaluiere die Argumente der Funktion
                 var args = [];
                 for (var i=1; i < x.length; i++) {
-                    args.push(evaluate(x[i]))
+                    args.push(evaluate(x[i]), local_environment)
                 }
 
                 if (func instanceof Array) {  // Selbst definierte Funktion
                     // func[0]=== 'lambda'
+
+                    // Kreiere ein neues leeres lokales Environment für die
+                    // Ausführung der Funktion.
+                    var local_environment = {}
+
                     var arg_names = func[1];
                     var body = func[2];
+
                     if (arg_names.length === 1) {
-                        environment[arg_names[0]] = args[0];
+                        local_environment[arg_names[0]] = args[0];
                     }
-                    return evaluate(body);
+                    return evaluate(body, local_environment);
                 } else {   // Eingebaute Funktion
                     // Führe die Funktion mit den verbleibenden Argumenten aus
                     return func(...args);
@@ -150,7 +161,7 @@
             input: "",
             tokens: [],
             syntax_tree: [],
-            environment: environment,
+            environment: global_environment,
             result: undefined,
             error: false,
             debug: true
@@ -164,7 +175,7 @@
                 try {
                     this.tokens = tokenize(val);
                     this.syntax_tree = parse(this.tokens.slice());
-                    let result = evaluate(this.syntax_tree);
+                    let result = evaluate(this.syntax_tree, {});
                     if (result instanceof Array) {
                         const pprint = tree => tree instanceof Array ?
                         "(" + tree.map(pprint).join(" ") + ")" : tree;
