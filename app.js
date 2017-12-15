@@ -104,7 +104,7 @@
 
                 // Finde die Funktion in der Liste der Funktionen
                 var func = environment[func_name];
-                console.log(func);
+
                 // Evaluiere die Argumente der Funktion
                 var args = [];
                 for (var i=1; i < x.length; i++) {
