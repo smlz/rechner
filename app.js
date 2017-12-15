@@ -113,7 +113,7 @@
                 // Evaluiere die Argumente der Funktion
                 var args = [];
                 for (var i=1; i < x.length; i++) {
-                    args.push(evaluate(x[i]), local_environment)
+                    args.push(evaluate(x[i], local_environment));
                 }
 
                 if (func instanceof Array) {  // Selbst definierte Funktion
