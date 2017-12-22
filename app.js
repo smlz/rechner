@@ -63,6 +63,13 @@
         "<": function(a, b) { return a < b; },
         "==": function(a, b) { return a === b; },
         "!=": function(a, b) { return a !== b; },
+        "if": function(cond, cons, alt) {
+            if (cond) {
+                return cons;
+            } else {
+                return alt;
+            }
+        },
     };
 
     // ===================================== //
