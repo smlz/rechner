@@ -59,6 +59,10 @@
         "*": function(a, b) { return a * b; },
         "/": function(a, b) { return a / b; },
         "sqrt": Math.sqrt,
+        ">": function(a, b) { return a > b; },
+        "<": function(a, b) { return a < b; },
+        "==": function(a, b) { return a === b; },
+        "!=": function(a, b) { return a !== b; },
     };
 
     // ===================================== //
