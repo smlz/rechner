@@ -180,7 +180,7 @@
                 try {
                     this.tokens = tokenize(val);
                     this.syntax_tree = parse(this.tokens.slice());
-                    let result = evaluate(this.syntax_tree, {});
+                    let result = evaluate(this.syntax_tree, global_environment);
                     if (result instanceof Array) {
                         const pprint = tree => tree instanceof Array ?
                         "(" + tree.map(pprint).join(" ") + ")" : tree;
