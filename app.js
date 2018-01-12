@@ -138,8 +138,8 @@
                     var arg_names = func[1];
                     var body = func[2];
 
-                    if (arg_names.length === 1) {
-                        local_environment[arg_names[0]] = args[0];
+                    for (let i=0; i<arg_names.length; i++) {
+                        local_environment[arg_names[i]] = args[i];
                     }
                     return evaluate(body, local_environment);
                 } else {   // Eingebaute Funktion
