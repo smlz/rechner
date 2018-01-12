@@ -63,13 +63,6 @@
         "<": function(a, b) { return a < b; },
         "==": function(a, b) { return a === b; },
         "!=": function(a, b) { return a !== b; },
-        "if": function(cond, cons, alt) {
-            if (cond) {
-                return cons;
-            } else {
-                return alt;
-            }
-        },
     };
 
     // ===================================== //
@@ -114,6 +107,15 @@
                 local_environment[var_name] = value;
             } else if (func_name === 'lambda') {
                 return x;
+            } else if (func_name === 'if') {
+                var cond = x[1],
+                    cons = x[2],
+                    alt = x[3];
+                if (evaluate(cond, local_environment)) {
+                    return evaluate(cons, local_environment);
+                } else {
+                    return evaluate(alt, local_environment);
+                }
             } else {
                 // ================== //
                 // 'Normale' Funktion //
